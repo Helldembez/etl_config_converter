@@ -7,8 +7,15 @@
 typedef struct {
     char *key;
     char *value;
+} Map;
+
+typedef struct {
+    char *key;
+    char *value;
+    Map valueMapping[2];
 } CVARMapping;
 
+// Key must be lowercase because I dont want to perform tolower on it.
 static CVARMapping cvarMapping[] =
         {
                 {"bot_debug",                   NULL},
@@ -185,27 +192,27 @@ static CVARMapping cvarMapping[] =
                 {"win_wndproc",                 NULL},
 
                 // etpro values mapping
-                {"b_altHud",               "cg_altHud"},
-                {"b_altHudFlags",          "cg_altHudFlags"},
+                {"b_althud",               "cg_althud"},
+                {"b_althudflags",          "cg_althudflags"},
                 {"b_antilag",              "cg_antilag"},
-                {"b_chatAlpha",            "cg_chatAlpha"},
-                {"b_chatFlags",            "cg_chatFlags"},
+                {"b_chatalpha",            "cg_chatalpha"},
+                {"b_chatflags",            "cg_chatflags"},
                 {"b_drawfps",              "cg_drawfps"},
                 {"b_drawspeed",            "cg_drawspeed"},
-                {"b_fireteamLatchedClass", "cg_fireteamLatchedClass"},
+                {"b_fireteamlatchedclass", "cg_fireteamlatchedclass"},
                 {"b_hitsounds",            "cg_hitsounds"},
-                {"b_locationMaxChars",     "cg_locationMaxChars"},
+                {"b_locationmaxchars",     "cg_locationmaxchars"},
                 {"b_mapzoom",              "cg_automapzoom"},
                 {"b_muzzleflash",          "cg_muzzleflash"},
                 {"b_noactivatelean",       "cg_noactivatelean"},
-                {"b_optimizePrediction",   "cg_optimizePrediction"},
-                {"b_popupFadeTime",        "cg_popupFadeTime"},
-                {"b_popupStayTime",        "cg_popupStayTime"},
+                {"b_optimizeprediction",   "cg_optimizeprediction"},
+                {"b_popupfadetime",        "cg_popupfadetime"},
+                {"b_popupstaytime",        "cg_popupstaytime"},
                 {"b_predefineddemokeys",   "cg_predefineddemokeys"},
-                {"b_simpleItems",          "cg_simpleitems"},
-                {"b_smallPopups",          "cg_drawSmallPopupIcons"},
+                {"b_simpleitems",          "cg_simpleitems"},
+                {"b_smallpopups",          "cg_drawsmallpopupicons"},
                 {"b_tracers",              "cg_tracers"},
-                {"b_weapaltReloads",       "cg_weapaltReloads"},
+                {"b_weapaltreloads",       "cg_weapaltreloads"},
 
                 // deleted etpro values
                 {"b_backupcvars",               NULL},
@@ -219,9 +226,9 @@ static CVARMapping cvarMapping[] =
                 {"b_demo_autotimescaleweapons", NULL},
                 {"b_demo_dynamitecam",          NULL},
                 {"b_demo_dynamitecounter",      NULL},
-                {"b_demo_followxDistance",      NULL},
-                {"b_demo_followyDistance",      NULL},
-                {"b_demo_followzDistance",      NULL},
+                {"b_demo_followxdistance",      NULL},
+                {"b_demo_followydistance",      NULL},
+                {"b_demo_followzdistance",      NULL},
                 {"b_demo_freecamspeed",         NULL},
                 {"b_demo_grenadecam",           NULL},
                 {"b_demo_lookat",               NULL},
@@ -236,25 +243,25 @@ static CVARMapping cvarMapping[] =
                 {"b_demo_teamonlymissilecam",   NULL},
                 {"b_demo_yawturnspeed",         NULL},
                 {"b_demorecord_statusline",     NULL},
-                {"b_descriptiveTextscale",      NULL},
+                {"b_descriptivetextscale",      NULL},
                 {"b_drawclock",                 NULL},
-                {"b_drawPromotions",            NULL},
+                {"b_drawpromotions",            NULL},
                 {"b_drawranks",                 NULL},
-                {"b_drawRewards",               NULL},
+                {"b_drawrewards",               NULL},
                 {"b_drawspectatoralpha",        NULL},
                 {"b_drawspectatorteamflags",    NULL},
-                {"b_fireteamAlpha",             NULL},
+                {"b_fireteamalpha",             NULL},
                 {"b_fixedphysics",              NULL},
                 {"b_goatsound",                 NULL},
-                {"b_hudYoffset",                NULL},
+                {"b_hudyoffset",                NULL},
                 {"b_killshot_delay",            NULL},
-                {"b_lagometerAlpha",            NULL},
-                {"b_locationJustify",           NULL},
-                {"b_locationMode",              NULL},
+                {"b_lagometeralpha",            NULL},
+                {"b_locationjustify",           NULL},
+                {"b_locationmode",              NULL},
                 {"b_logbanners",                NULL},
-                {"b_numPopups",                 NULL},
+                {"b_numpopups",                 NULL},
                 {"b_panzerhack",                NULL},
-                {"b_popupTime",                 NULL},
+                {"b_popuptime",                 NULL},
                 {"b_shovesounds",               NULL},
                 {"b_speedinterval",             NULL},
                 {"b_speedunit",                 NULL},
@@ -267,7 +274,7 @@ static CVARMapping cvarMapping[] =
                 {"b_tjl_stepsize",              NULL},
                 {"b_tjl_stoponnomove",          NULL},
                 {"b_votetextscale",             NULL},
-                {"b_watermarkAlpha",            NULL},
+                {"b_watermarkalpha",            NULL},
 
                 {"ui_",                         NULL},
         };

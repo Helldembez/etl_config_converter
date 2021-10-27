@@ -4,6 +4,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <ctype.h>
+
+inline void toLower(char* p) {
+    for(int i = 0; p[i]; i++){
+        p[i] = tolower(p[i]);
+    }
+}
+
+inline int contains_word(char* line, char* word)
+{
+    char c = strstr(line, word)[strlen(word)];
+    return isspace(c) || c == '\0';
+}
 
 inline int prefix(const char *pre, const char *str) {
     return strncmp(pre, str, strlen(pre)) == 0;
@@ -87,6 +100,26 @@ inline char *substr_of(char *string, char *delimiter) {
     *(substr + tlen) = 0;
 
     return substr;
+}
+
+inline char *trimwhitespace(char *str)
+{
+    char *end;
+
+    // Trim leading space
+    while(isspace((unsigned char)*str)) str++;
+
+    if(*str == 0)  // All spaces?
+        return str;
+
+    // Trim trailing space
+    end = str + strlen(str) - 1;
+    while(end > str && isspace((unsigned char)*end)) end--;
+
+    // Write new null terminator character
+    end[1] = '\0';
+
+    return str;
 }
 
 inline int string_ends_with(const char * str, const char * suffix)

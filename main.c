@@ -5,8 +5,28 @@
 #include "mapping.c"
 #include "string_helper.c"
 
+char *get_cvar_value(char *line, char *cvar) {
+    char *value = strstr(line, cvar) + strlen(cvar);
+    char *trimmedValue = trimwhitespace(value);
+    int quotedValue = 0;
+    if (trimmedValue[0] == '"') {
+        trimmedValue = trimmedValue + 1;
+        quotedValue = 1;
+    }
+
+    for (int i = 0; trimmedValue[i] != 0; i++) {
+        if (quotedValue && trimmedValue[i] == '"' || isspace(trimmedValue[i]) || trimmedValue[i] == '/') {
+            *(trimmedValue + i) = 0;
+            break;
+        }
+    }
+
+    return trimmedValue;
+}
+
 void convert(char *line, FILE *writeStream) {
-    if (prefix("//", line)) {
+    toLower(line);
+    if (prefix("//", line) || prefix("bind", line)) {
         printf("Ignoring line: %s\n", line);
         fputs(line, writeStream);
         return;
@@ -20,9 +40,21 @@ void convert(char *line, FILE *writeStream) {
             break;
         }
 
-        if (strstr(line, cv->key) != NULL) {
+        if (contains_word(line, cv->key)) {
             printf("Found line: %s\n", line);
             newline = replaceWord(line, cv->key, cv->value);
+
+            if (cv->valueMapping[0].key) {
+                char *oldValue = get_cvar_value(line, cv->key);
+                if (strlen(oldValue) > 0) {
+                    for (int n = 0; n < sizeof cv->valueMapping; n++) {
+                        if (!strcmp(oldValue, cv->valueMapping[n].key)) {
+                            newline = replaceWord(newline, oldValue, cv->valueMapping[n].value);
+                            break;
+                        }
+                    }
+                }
+            }
             break;
         }
     }
@@ -80,10 +112,10 @@ void print_help() {
             "etl_config_converter -h                : Will display this help output.\n"
             "etl_config_converter Autoexec.cfg      : A path to the filename or the filename itself to parse.\n"
             "etl_config_converter -a                : Instead of specifying a file to convert it will convert all '.cfg' files in the current directory.\n");
-            //"etl_config_converter -a [path_to_dir]  : Same as '-a', but accept a path to a directory to convert '.cfg' files in instead of the current directory.\n");
+    //"etl_config_converter -a [path_to_dir]  : Same as '-a', but accept a path to a directory to convert '.cfg' files in instead of the current directory.\n");
 }
 
-void convert_config(char* path) {
+void convert_config(char *path) {
     // TODO: Implement detection when the file has nothing to convert.
     char *config_name = file_from_path(path);
     char *config_path = substr_of(path, config_name);
