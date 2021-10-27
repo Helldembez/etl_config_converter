@@ -14,7 +14,7 @@ typedef struct {
     char *value;
     Map valueMapping[2];
 } CVARMapping;
-
+static Map booleanInverse[] = {{"0", "1"}, {"1", "0"}};
 // Key must be lowercase because I dont want to perform tolower on it.
 static CVARMapping cvarMapping[] =
         {
@@ -48,8 +48,8 @@ static CVARMapping cvarMapping[] =
                 {"cg_messageplayer",            NULL},
                 {"cg_norender",                 NULL},
                 {"cg_notaunt",                  NULL},
-                {"cg_novoicechats",             NULL},
-                {"cg_novoicetext",              NULL},
+                {"cg_novoicechats",             "cg_voiceChats", booleanInverse},
+                {"cg_novoicetext",              "cg_voiceText", booleanInverse},
                 {"cg_recording_statusline",     NULL},
                 {"cg_runpitch",                 NULL},
                 {"cg_runroll",                  NULL},
@@ -204,14 +204,14 @@ static CVARMapping cvarMapping[] =
                 {"b_locationmaxchars",     "cg_locationmaxchars"},
                 {"b_mapzoom",              "cg_automapzoom"},
                 {"b_muzzleflash",          "cg_muzzleflash"},
-                {"b_noactivatelean",       "cg_noactivatelean"},
+                {"b_noactivatelean",       "cl_activatelean", booleanInverse},
                 {"b_optimizeprediction",   "cg_optimizeprediction"},
                 {"b_popupfadetime",        "cg_popupfadetime"},
                 {"b_popupstaytime",        "cg_popupstaytime"},
                 {"b_predefineddemokeys",   "cg_predefineddemokeys"},
                 {"b_simpleitems",          "cg_simpleitems"},
                 {"b_smallpopups",          "cg_drawsmallpopupicons"},
-                {"b_tracers",              "cg_tracers"},
+                {"b_tracers",              "cg_tracers", {{"2", "3"}}},
                 {"b_weapaltreloads",       "cg_weapaltreloads"},
 
                 // deleted etpro values
@@ -244,9 +244,9 @@ static CVARMapping cvarMapping[] =
                 {"b_demo_yawturnspeed",         NULL},
                 {"b_demorecord_statusline",     NULL},
                 {"b_descriptivetextscale",      NULL},
-                {"b_drawclock",                 NULL},
+                {"b_drawclock",                 "cg_drawTime"},
                 {"b_drawpromotions",            NULL},
-                {"b_drawranks",                 NULL},
+                {"b_drawranks",                 "cg_drawCrosshairInfo", {{"1", "2"}}},
                 {"b_drawrewards",               NULL},
                 {"b_drawspectatoralpha",        NULL},
                 {"b_drawspectatorteamflags",    NULL},
@@ -256,7 +256,7 @@ static CVARMapping cvarMapping[] =
                 {"b_hudyoffset",                NULL},
                 {"b_killshot_delay",            NULL},
                 {"b_lagometeralpha",            NULL},
-                {"b_locationjustify",           NULL},
+                {"b_locationjustify",           "cg_fireteamLocationAlign"},
                 {"b_locationmode",              NULL},
                 {"b_logbanners",                NULL},
                 {"b_numpopups",                 NULL},
