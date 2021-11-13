@@ -6,16 +6,34 @@
 #include <stdarg.h>
 #include <ctype.h>
 
-inline void toLower(char* p) {
-    for(int i = 0; p[i]; i++){
+inline char *str_cpy(const char *from) {
+    char *to = malloc(strlen(from) + 1);
+    for (char *p = to; (*p = *from) != '\0'; ++p, ++from) { ;
+    }
+
+    return to;
+}
+
+inline void toLower(char *p) {
+    for (int i = 0; p[i]; i++) {
         p[i] = tolower(p[i]);
     }
 }
 
-inline int contains_word(char* line, char* word)
-{
-    char c = strstr(line, word)[strlen(word)];
-    return isspace(c) || c == '\0';
+inline int contains_word(char *line, char *word) {
+    char *str;
+    if (word[strlen(word) - 1] == '*') {
+        char *tmp = str_cpy(word);
+        tmp[strlen(tmp) - 1] = '\0';
+        return strstr(line, tmp) != NULL;
+    } else {
+        str = strstr(line, word);
+    }
+    if (str != NULL) {
+        char c = str[strlen(word)];
+        return isspace(c);
+    }
+    return 0;
 }
 
 inline int prefix(const char *pre, const char *str) {
@@ -102,19 +120,18 @@ inline char *substr_of(char *string, char *delimiter) {
     return substr;
 }
 
-inline char *trimwhitespace(char *str)
-{
+inline char *trimwhitespace(char *str) {
     char *end;
 
     // Trim leading space
-    while(isspace((unsigned char)*str)) str++;
+    while (isspace((unsigned char) *str)) str++;
 
-    if(*str == 0)  // All spaces?
+    if (*str == 0)  // All spaces?
         return str;
 
     // Trim trailing space
     end = str + strlen(str) - 1;
-    while(end > str && isspace((unsigned char)*end)) end--;
+    while (end > str && isspace((unsigned char) *end)) end--;
 
     // Write new null terminator character
     end[1] = '\0';
@@ -122,10 +139,9 @@ inline char *trimwhitespace(char *str)
     return str;
 }
 
-inline int string_ends_with(const char * str, const char * suffix)
-{
+inline int string_ends_with(const char *str, const char *suffix) {
     int str_len = strlen(str);
     int suffix_len = strlen(suffix);
 
-    return (str_len >= suffix_len) && (0 == strcmp(str + (str_len-suffix_len), suffix));
+    return (str_len >= suffix_len) && (0 == strcmp(str + (str_len - suffix_len), suffix));
 }

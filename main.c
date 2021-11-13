@@ -25,9 +25,9 @@ char *get_cvar_value(char *line, char *cvar) {
 }
 
 void convert(char *line, FILE *writeStream) {
-    toLower(line);
-    if (prefix("//", line) || prefix("bind", line)) {
-        printf("Ignoring line: %s\n", line);
+    char* lower_line = str_cpy(line);
+    toLower(lower_line);
+    if (line[0] == '\n' || prefix("//", lower_line) || prefix("bind", lower_line)) {
         fputs(line, writeStream);
         return;
     }
@@ -40,14 +40,17 @@ void convert(char *line, FILE *writeStream) {
             break;
         }
 
-        if (contains_word(line, cv->key)) {
-            printf("Found line: %s\n", line);
+        if (contains_word(lower_line, cv->key)) {
+            if (cv->descText) {
+                fputs(concat(3, "// CONVERTER: ", cv->descText, "\n"), writeStream);
+            }
             newline = replaceWord(line, cv->key, cv->value);
 
             if (cv->valueMapping[0].key) {
-                char *oldValue = get_cvar_value(line, cv->key);
+                char *oldValue = get_cvar_value(lower_line, cv->key);
                 if (strlen(oldValue) > 0) {
                     for (int n = 0; n < sizeof cv->valueMapping; n++) {
+                        if (cv->valueMapping[n].key != NULL) break;
                         if (!strcmp(oldValue, cv->valueMapping[n].key)) {
                             newline = replaceWord(newline, oldValue, cv->valueMapping[n].value);
                             break;
@@ -115,6 +118,14 @@ void print_help() {
     //"etl_config_converter -a [path_to_dir]  : Same as '-a', but accept a path to a directory to convert '.cfg' files in instead of the current directory.\n");
 }
 
+void write_information_block(FILE *stream) {
+    char *info = "// CONVERTER:\n"
+                 "// For all useful information see the competitive wiki https://github.com/ET-Legacy-Competitive/faq/wiki\n"
+                 "// Legacy also offers players the fully customize their hud. See https://github.com/ET-Legacy-Competitive/faq/wiki/How-to:-Customize-your-own-HUDn\n"
+                 "\n";
+    fputs(info, stream);
+}
+
 void convert_config(char *path) {
     // TODO: Implement detection when the file has nothing to convert.
     char *config_name = file_from_path(path);
@@ -134,6 +145,8 @@ void convert_config(char *path) {
         exit(EXIT_FAILURE);
     }
     FILE *writeStream = open_file(converted_config, "w");
+
+    write_information_block(writeStream);
 
     char line[1024];
     while (fgets(line, 1024, stream)) {
