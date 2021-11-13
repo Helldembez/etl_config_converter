@@ -13,8 +13,10 @@ typedef struct {
     char *key;
     char *value;
     Map valueMapping[2];
+    char *descText;
 } CVARMapping;
-static Map booleanInverse[] = {{"0", "1"}, {"1", "0"}};
+static Map booleanInverse[] = {{"0", "1"},
+                               {"1", "0"}};
 // Key must be lowercase because I dont want to perform tolower on it.
 static CVARMapping cvarMapping[] =
         {
@@ -48,8 +50,8 @@ static CVARMapping cvarMapping[] =
                 {"cg_messageplayer",            NULL},
                 {"cg_norender",                 NULL},
                 {"cg_notaunt",                  NULL},
-                {"cg_novoicechats",             "cg_voiceChats", booleanInverse},
-                {"cg_novoicetext",              "cg_voiceText", booleanInverse},
+                {"cg_novoicechats",        "cg_voiceChats",        booleanInverse},
+                {"cg_novoicetext",         "cg_voiceText",         booleanInverse},
                 {"cg_recording_statusline",     NULL},
                 {"cg_runpitch",                 NULL},
                 {"cg_runroll",                  NULL},
@@ -204,14 +206,14 @@ static CVARMapping cvarMapping[] =
                 {"b_locationmaxchars",     "cg_locationmaxchars"},
                 {"b_mapzoom",              "cg_automapzoom"},
                 {"b_muzzleflash",          "cg_muzzleflash"},
-                {"b_noactivatelean",       "cl_activatelean", booleanInverse},
+                {"b_noactivatelean",       "cl_activatelean",    .valueMapping =  booleanInverse},
                 {"b_optimizeprediction",   "cg_optimizeprediction"},
                 {"b_popupfadetime",        "cg_popupfadetime"},
                 {"b_popupstaytime",        "cg_popupstaytime"},
                 {"b_predefineddemokeys",   "cg_predefineddemokeys"},
                 {"b_simpleitems",          "cg_simpleitems"},
                 {"b_smallpopups",          "cg_drawsmallpopupicons"},
-                {"b_tracers",              "cg_tracers", {{"2", "3"}}},
+                {"b_tracers",              "cg_tracers",           {{"2", "3"}}},
                 {"b_weapaltreloads",       "cg_weapaltreloads"},
 
                 // deleted etpro values
@@ -244,9 +246,9 @@ static CVARMapping cvarMapping[] =
                 {"b_demo_yawturnspeed",         NULL},
                 {"b_demorecord_statusline",     NULL},
                 {"b_descriptivetextscale",      NULL},
-                {"b_drawclock",                 "cg_drawTime"},
+                {"b_drawclock",            "cg_drawTime"},
                 {"b_drawpromotions",            NULL},
-                {"b_drawranks",                 "cg_drawCrosshairInfo", {{"1", "2"}}},
+                {"b_drawranks",            "cg_drawCrosshairInfo", {{"1", "2"}}},
                 {"b_drawrewards",               NULL},
                 {"b_drawspectatoralpha",        NULL},
                 {"b_drawspectatorteamflags",    NULL},
@@ -256,12 +258,12 @@ static CVARMapping cvarMapping[] =
                 {"b_hudyoffset",                NULL},
                 {"b_killshot_delay",            NULL},
                 {"b_lagometeralpha",            NULL},
-                {"b_locationjustify",           "cg_fireteamLocationAlign"},
+                {"b_locationjustify",      "cg_fireteamLocationAlign"},
                 {"b_locationmode",              NULL},
                 {"b_logbanners",                NULL},
                 {"b_numpopups",                 NULL},
                 {"b_panzerhack",                NULL},
-                {"b_popuptime",                 NULL},
+                {"b_popuptime",            "cg_popupstaytime", .descText = "See also cg_popupfadetime: https://etlegacy.readthedocs.io/en/latest/cvars.html?highlight=fireteam#cg-popupfadetime-cvar-added"},
                 {"b_shovesounds",               NULL},
                 {"b_speedinterval",             NULL},
                 {"b_speedunit",                 NULL},
@@ -273,10 +275,10 @@ static CVARMapping cvarMapping[] =
                 {"b_tjl_showmaxspeed",          NULL},
                 {"b_tjl_stepsize",              NULL},
                 {"b_tjl_stoponnomove",          NULL},
-                {"b_votetextscale",             NULL},
+                {"b_votetextscale",        "cg_fontscalesp", .descText = "This CVAR does not map 1 to 1. In legacy there are multiple font scaling cvars. Default is 0.22. See https://etlegacy.readthedocs.io/en/latest/cvars.html?highlight=fireteam#cg-fontscalesp-cvar-added"},
                 {"b_watermarkalpha",            NULL},
 
-                {"ui_",                         NULL},
+                {"ui_*",                        NULL},
         };
 
 // \w{3,}(?=(?:[^"]*"[^"]*")*[^"]*\Z)
