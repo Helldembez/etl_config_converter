@@ -44,14 +44,14 @@ void convert(char *line, FILE *writeStream) {
             if (cv->descText) {
                 fputs(concat(3, "// CONVERTER: ", cv->descText, "\n"), writeStream);
             }
-            newline = replaceWord(line, cv->key, cv->value);
+            newline = replaceWord(lower_line, cv->key, cv->value);
 
             if (cv->valueMapping[0].key) {
                 char *oldValue = get_cvar_value(lower_line, cv->key);
                 if (strlen(oldValue) > 0) {
                     for (int n = 0; n < sizeof cv->valueMapping; n++) {
-                        if (cv->valueMapping[n].key != NULL) break;
-                        if (!strcmp(oldValue, cv->valueMapping[n].key)) {
+                        if (cv->valueMapping[n].key == NULL) break;
+                        if (!str_cmp(oldValue, cv->valueMapping[n].key)) {
                             newline = replaceWord(newline, oldValue, cv->valueMapping[n].value);
                             break;
                         }
@@ -144,6 +144,9 @@ void convert_config(char *path) {
                converted_config);
         exit(EXIT_FAILURE);
     }
+
+    printf("Please check the converted config for comments. Some values are not mappable 1 to 1. \nThings like font are given a sensible default, which may not be what you had set.");
+
     FILE *writeStream = open_file(converted_config, "w");
 
     write_information_block(writeStream);

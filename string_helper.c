@@ -145,3 +145,7 @@ inline int string_ends_with(const char *str, const char *suffix) {
 
     return (str_len >= suffix_len) && (0 == strcmp(str + (str_len - suffix_len), suffix));
 }
+
+inline int str_cmp(const char * left, const char * right){
+    return !(left[0] == '*' || right[0] == '*') || !strcmp(left, right);
+}

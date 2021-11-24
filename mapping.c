@@ -206,7 +206,7 @@ static CVARMapping cvarMapping[] =
                 {"b_locationmaxchars",     "cg_locationmaxchars"},
                 {"b_mapzoom",              "cg_automapzoom"},
                 {"b_muzzleflash",          "cg_muzzleflash"},
-                {"b_noactivatelean",       "cl_activatelean",    .valueMapping =  booleanInverse},
+                {"b_noactivatelean",       "cl_activatelean", .valueMapping =  booleanInverse},
                 {"b_optimizeprediction",   "cg_optimizeprediction"},
                 {"b_popupfadetime",        "cg_popupfadetime"},
                 {"b_popupstaytime",        "cg_popupstaytime"},
@@ -275,10 +275,12 @@ static CVARMapping cvarMapping[] =
                 {"b_tjl_showmaxspeed",          NULL},
                 {"b_tjl_stepsize",              NULL},
                 {"b_tjl_stoponnomove",          NULL},
-                {"b_votetextscale",        "cg_fontscalesp", .descText = "This CVAR does not map 1 to 1. In legacy there are multiple font scaling cvars. Default is 0.22. See https://etlegacy.readthedocs.io/en/latest/cvars.html?highlight=fireteam#cg-fontscalesp-cvar-added"},
+                {"b_votetextscale",        "cg_fontscalesp", .valueMapping = {{"*",
+                                                                               "0.22"}}, .descText = "This CVAR does not map 1 to 1. In legacy there are multiple font scaling cvars. Default is 0.22. See https://etlegacy.readthedocs.io/en/latest/cvars.html?highlight=fireteam#cg-fontscalesp-cvar-added"},
                 {"b_watermarkalpha",            NULL},
 
                 {"ui_*",                        NULL},
+                {"b_*",                         NULL},
         };
 
 // \w{3,}(?=(?:[^"]*"[^"]*")*[^"]*\Z)
