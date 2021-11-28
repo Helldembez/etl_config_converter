@@ -156,6 +156,7 @@ static CVARMapping cvarMapping[] =
                 {"r_stereo",                    NULL},
                 {"r_textureanisotropy",         NULL},
                 {"r_verbose",                   NULL},
+                {"r_depthbits",                   "r_depthbits", {{"*", "24"}}},
 
                 {"s_debugmusic",                NULL},
                 {"s_defaultsound",              NULL},
