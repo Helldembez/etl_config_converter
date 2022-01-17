@@ -25,7 +25,7 @@ char *get_cvar_value(char *line, char *cvar) {
 }
 
 void convert(char *line, FILE *writeStream) {
-    char* lower_line = str_cpy(line);
+    char *lower_line = str_cpy(line);
     toLower(lower_line);
     if (line[0] == '\n' || prefix("//", lower_line) || prefix("bind", lower_line)) {
         fputs(line, writeStream);
@@ -46,12 +46,11 @@ void convert(char *line, FILE *writeStream) {
             }
             newline = replaceWord(lower_line, cv->key, cv->value);
 
-            if (cv->valueMapping[0].key) {
+            if (cv->vmSize) {
                 char *oldValue = get_cvar_value(lower_line, cv->key);
                 if (strlen(oldValue) > 0) {
-                    for (int n = 0; n < sizeof cv->valueMapping; n++) {
-                        if (cv->valueMapping[n].key == NULL) break;
-                        if (!str_cmp(oldValue, cv->valueMapping[n].key)) {
+                    for (int n = 0; n < cv->vmSize; n++) {
+                        if (str_cmp(oldValue, cv->valueMapping[n].key)) {
                             newline = replaceWord(newline, oldValue, cv->valueMapping[n].value);
                             break;
                         }

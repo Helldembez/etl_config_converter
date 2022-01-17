@@ -1,8 +1,7 @@
 //
 // Created by Helldembez on 19-10-2021.
 //
-
-#include <vcruntime.h>
+#include <stdio.h>
 
 typedef struct {
     char *key;
@@ -12,11 +11,18 @@ typedef struct {
 typedef struct {
     char *key;
     char *value;
-    Map valueMapping[2];
+    Map *valueMapping;
+    int vmSize;
     char *descText;
 } CVARMapping;
+
 static Map booleanInverse[] = {{"0", "1"},
                                {"1", "0"}};
+static Map depthBitsValueMapping[] = {{"*", "24"}};
+static Map tracerValueMapping[] = {{"2", "3"}};
+static Map crosshairValueMapping[] = {{"1", "2"}};
+static Map fontscaleValueMapping[] = {{"*", "0.22"}};
+
 // Key must be lowercase because I dont want to perform tolower on it.
 static CVARMapping cvarMapping[] =
         {
@@ -50,8 +56,8 @@ static CVARMapping cvarMapping[] =
                 {"cg_messageplayer",            NULL},
                 {"cg_norender",                 NULL},
                 {"cg_notaunt",                  NULL},
-                {"cg_novoicechats",        "cg_voiceChats",        booleanInverse},
-                {"cg_novoicetext",         "cg_voiceText",         booleanInverse},
+                {"cg_novoicechats",        "cg_voiceChats", .valueMapping = booleanInverse, .vmSize = 2},
+                {"cg_novoicetext",         "cg_voiceText", .valueMapping =  booleanInverse, .vmSize = 2},
                 {"cg_recording_statusline",     NULL},
                 {"cg_runpitch",                 NULL},
                 {"cg_runroll",                  NULL},
@@ -156,7 +162,7 @@ static CVARMapping cvarMapping[] =
                 {"r_stereo",                    NULL},
                 {"r_textureanisotropy",         NULL},
                 {"r_verbose",                   NULL},
-                {"r_depthbits",                   "r_depthbits", {{"*", "24"}}},
+                {"r_depthbits",            "r_depthbits", .valueMapping = depthBitsValueMapping, .vmSize = 1},
 
                 {"s_debugmusic",                NULL},
                 {"s_defaultsound",              NULL},
@@ -207,14 +213,14 @@ static CVARMapping cvarMapping[] =
                 {"b_locationmaxchars",     "cg_locationmaxchars"},
                 {"b_mapzoom",              "cg_automapzoom"},
                 {"b_muzzleflash",          "cg_muzzleflash"},
-                {"b_noactivatelean",       "cl_activatelean", .valueMapping =  booleanInverse},
+                {"b_noactivatelean",       "cl_activatelean", .valueMapping = booleanInverse, .vmSize = 2},
                 {"b_optimizeprediction",   "cg_optimizeprediction"},
                 {"b_popupfadetime",        "cg_popupfadetime"},
                 {"b_popupstaytime",        "cg_popupstaytime"},
                 {"b_predefineddemokeys",   "cg_predefineddemokeys"},
                 {"b_simpleitems",          "cg_simpleitems"},
                 {"b_smallpopups",          "cg_drawsmallpopupicons"},
-                {"b_tracers",              "cg_tracers",           {{"2", "3"}}},
+                {"b_tracers",              "cg_tracers", .valueMapping = tracerValueMapping, .vmSize = 1},
                 {"b_weapaltreloads",       "cg_weapaltreloads"},
 
                 // deleted etpro values
@@ -249,7 +255,7 @@ static CVARMapping cvarMapping[] =
                 {"b_descriptivetextscale",      NULL},
                 {"b_drawclock",            "cg_drawTime"},
                 {"b_drawpromotions",            NULL},
-                {"b_drawranks",            "cg_drawCrosshairInfo", {{"1", "2"}}},
+                {"b_drawranks",            "cg_drawCrosshairInfo", .valueMapping = crosshairValueMapping, .vmSize = 1},
                 {"b_drawrewards",               NULL},
                 {"b_drawspectatoralpha",        NULL},
                 {"b_drawspectatorteamflags",    NULL},
@@ -264,7 +270,7 @@ static CVARMapping cvarMapping[] =
                 {"b_logbanners",                NULL},
                 {"b_numpopups",                 NULL},
                 {"b_panzerhack",                NULL},
-                {"b_popuptime",            "cg_popupstaytime", .descText = "See also cg_popupfadetime: https://etlegacy.readthedocs.io/en/latest/cvars.html?highlight=fireteam#cg-popupfadetime-cvar-added"},
+                {"b_popuptime",                 NULL},
                 {"b_shovesounds",               NULL},
                 {"b_speedinterval",             NULL},
                 {"b_speedunit",                 NULL},
@@ -276,8 +282,7 @@ static CVARMapping cvarMapping[] =
                 {"b_tjl_showmaxspeed",          NULL},
                 {"b_tjl_stepsize",              NULL},
                 {"b_tjl_stoponnomove",          NULL},
-                {"b_votetextscale",        "cg_fontscalesp", .valueMapping = {{"*",
-                                                                               "0.22"}}, .descText = "This CVAR does not map 1 to 1. In legacy there are multiple font scaling cvars. Default is 0.22. See https://etlegacy.readthedocs.io/en/latest/cvars.html?highlight=fireteam#cg-fontscalesp-cvar-added"},
+                {"b_votetextscale",        "cg_fontscalesp", .valueMapping = fontscaleValueMapping, .vmSize = 1, .descText = "This CVAR does not map 1 to 1. In legacy there are multiple font scaling cvars. Default is 0.22. See https://etlegacy.readthedocs.io/en/latest/cvars.html?highlight=fireteam#cg-fontscalesp-cvar-added"},
                 {"b_watermarkalpha",            NULL},
 
                 {"ui_*",                        NULL},
