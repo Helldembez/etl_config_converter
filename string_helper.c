@@ -6,7 +6,7 @@
 #include <stdarg.h>
 #include <ctype.h>
 
-inline char *str_cpy(const char *from) {
+static inline char *str_cpy(const char *from) {
     char *to = malloc(strlen(from) + 1);
     for (char *p = to; (*p = *from) != '\0'; ++p, ++from) { ;
     }
@@ -14,34 +14,61 @@ inline char *str_cpy(const char *from) {
     return to;
 }
 
-inline void toLower(char *p) {
+static inline void toLower(char *p) {
     for (int i = 0; p[i]; i++) {
         p[i] = tolower(p[i]);
     }
 }
 
-inline int contains_word(char *line, char *word) {
+static inline char *concat(int count, ...) {
+    va_list ap;
+    int i;
+
+    // Find required length to store merged string
+    int len = 1; // room for NULL
+            va_start(ap, count);
+    for (i = 0; i < count; i++)
+        len += strlen(va_arg(ap, char*));
+            va_end(ap);
+
+    // Allocate memory to concat strings
+    char *merged = calloc(sizeof(char), len);
+    int null_pos = 0;
+
+    // Actually concatenate strings
+            va_start(ap, count);
+    for (i = 0; i < count; i++) {
+        char *s = va_arg(ap, char*);
+        strcpy(merged + null_pos, s);
+        null_pos += strlen(s);
+    }
+            va_end(ap);
+
+    return merged;
+}
+
+static inline int contains_word(char *line, char *word) {
     char *str;
     if (word[strlen(word) - 1] == '*') {
         char *tmp = str_cpy(word);
         tmp[strlen(tmp) - 1] = '\0';
         return strstr(line, tmp) != NULL;
     } else {
-        str = strstr(line, word);
+        str = strstr(line, concat(2, " ", word));
     }
     if (str != NULL) {
-        char c = str[strlen(word)];
+        char c = str[strlen(word) + 1];
         return isspace(c);
     }
     return 0;
 }
 
-inline int prefix(const char *pre, const char *str) {
+static inline int prefix(const char *pre, const char *str) {
     return strncmp(pre, str, strlen(pre)) == 0;
 }
 
-inline char *replaceWord(const char *s, const char *oldW,
-                         const char *newW) {
+static inline char *replaceWord(const char *s, const char *oldW,
+                                const char *newW) {
     if (newW == NULL) {
         return "";
     }
@@ -79,35 +106,7 @@ inline char *replaceWord(const char *s, const char *oldW,
     return result;
 }
 
-
-inline char *concat(int count, ...) {
-    va_list ap;
-    int i;
-
-    // Find required length to store merged string
-    int len = 1; // room for NULL
-            va_start(ap, count);
-    for (i = 0; i < count; i++)
-        len += strlen(va_arg(ap, char*));
-            va_end(ap);
-
-    // Allocate memory to concat strings
-    char *merged = calloc(sizeof(char), len);
-    int null_pos = 0;
-
-    // Actually concatenate strings
-            va_start(ap, count);
-    for (i = 0; i < count; i++) {
-        char *s = va_arg(ap, char*);
-        strcpy(merged + null_pos, s);
-        null_pos += strlen(s);
-    }
-            va_end(ap);
-
-    return merged;
-}
-
-inline char *substr_of(char *string, char *delimiter) {
+static inline char *substr_of(char *string, char *delimiter) {
     size_t tlen = strstr(string, delimiter) - string;
     char *substr = malloc(tlen + 1);
     if (!substr) {
@@ -120,7 +119,7 @@ inline char *substr_of(char *string, char *delimiter) {
     return substr;
 }
 
-inline char *trimwhitespace(char *str) {
+static inline char *trimwhitespace(char *str) {
     char *end;
 
     // Trim leading space
@@ -139,13 +138,13 @@ inline char *trimwhitespace(char *str) {
     return str;
 }
 
-inline int string_ends_with(const char *str, const char *suffix) {
+static inline int string_ends_with(const char *str, const char *suffix) {
     int str_len = strlen(str);
     int suffix_len = strlen(suffix);
 
     return (str_len >= suffix_len) && (0 == strcmp(str + (str_len - suffix_len), suffix));
 }
 
-inline int str_cmp(const char *left, const char *right) {
+static inline int str_cmp(const char *left, const char *right) {
     return !(left[0] == '*' || right[0] == '*') || strcmp(left, right);
 }
