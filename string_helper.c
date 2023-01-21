@@ -52,7 +52,7 @@ static inline int contains_word(char *line, char *word) {
     if (word[strlen(word) - 1] == '*') {
         char *tmp = str_cpy(word);
         tmp[strlen(tmp) - 1] = '\0';
-        return strstr(line, tmp) != NULL;
+        return strstr(line, concat(2, " ", tmp)) != NULL;
     } else {
         str = strstr(line, concat(2, " ", word));
     }
