@@ -5,6 +5,8 @@
 #include "mapping.c"
 #include "string_helper.c"
 
+#define VERSION "2.80.2"
+
 char *get_cvar_value(char *line, char *cvar) {
     char *value = strstr(line, cvar) + strlen(cvar);
     char *trimmedValue = trimwhitespace(value);
@@ -64,6 +66,22 @@ void convert(char *line, FILE *writeStream) {
     if (newline) {
         fputs(newline, writeStream);
     } else {
+        MapList *test;
+        int found = 0;
+        for (i = 0, test = existingCvars; i < existingCvarsSize; i++, test++) {
+            if (contains_word(lower_line, test->key)) {
+                char **list;
+                int n;
+                for (n = 0, list = test->value; n < test->size; n++, list++) {
+                    if (contains_word(lower_line, *list)) {
+                        found = 1;
+                        break;
+                    }
+                }
+                if (!found) { return; }
+            }
+            if (found) { break; }
+        }
         fputs(line, writeStream);
     }
 
@@ -104,7 +122,9 @@ char *file_from_path(char *path) {
 
 void print_help() {
     printf(
-            "Enemy Territory: Legacy config converter\n"
+            "Enemy Territory: Legacy config converter - Legacy "
+            VERSION
+            "\n"
             "\n"
             "This program converts a ETPro config to a legacy compatible config. It does this by mapping the ETPro/2.60b cvars to the legacy variant. "
             "If there is no viable mapping the cvar gets deleted from the config. This convert creates a new file with the '-converted' postfix to the filename as name.\n"
@@ -118,7 +138,9 @@ void print_help() {
 }
 
 void write_information_block(FILE *stream) {
-    char *info = "// CONVERTER:\n"
+    char *info = "// CONVERTER to legacy: "
+                 VERSION
+                 "\n"
                  "// For all useful information see the competitive wiki https://github.com/ET-Legacy-Competitive/faq/wiki\n"
                  "// Legacy also offers players the fully customize their hud. See https://github.com/ET-Legacy-Competitive/faq/wiki/How-to:-Customize-your-own-HUDn\n"
                  "\n";
@@ -126,7 +148,6 @@ void write_information_block(FILE *stream) {
 }
 
 void convert_config(char *path) {
-    // TODO: Implement detection when the file has nothing to convert.
     char *config_name = file_from_path(path);
     char *config_path = substr_of(path, config_name);
     char *substr = substr_of(config_name, ".cfg");
