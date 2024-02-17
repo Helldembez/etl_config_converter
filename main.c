@@ -46,6 +46,14 @@ void convert(char *line, FILE *writeStream) {
             if (cv->descText) {
                 fputs(concat(3, "// CONVERTER: ", cv->descText, "\n"), writeStream);
             }
+            // TODO: line contains multiple _'s and was going to remove, just ignore it with a msg
+//            if (cv->value == NULL && count(lower_line, '_') > 1) {
+//                fputs(concat(3, "// CONVERTER: '", cv->key,
+//                             "' does not exist anymore and can be removed, "
+//                             "but since it is used in a line with multiple CVARS it cant be removed automatically",
+//                             "\n"), writeStream);
+//                break;
+//            }
             newline = replaceWord(lower_line, cv->key, cv->value);
 
             if (cv->vmSize) {
@@ -78,7 +86,17 @@ void convert(char *line, FILE *writeStream) {
                         break;
                     }
                 }
-                if (!found) { return; }
+                // TODO: line contains multiple _'s and was going to remove, just ignore it with a msg
+                if (!found) {
+//                    if (count(lower_line, '_') > 1) {
+//                        fputs(concat(3, "// CONVERTER: '", test->key,
+//                                     "' does not exist anymore and can be removed, "
+//                                     "but since it is used in a line with multiple CVARS it cant be removed automatically",
+//                                     "\n"), writeStream);
+//                        break;
+//                    }
+                    return;
+                }
             }
             if (found) { break; }
         }

@@ -203,7 +203,7 @@ static char *conCvars[] =
 
 static char *soundCvars[] =
         {
-                "s_currentmusic",
+//                "s_currentmusic",
                 "s_device",
                 "s_sdlmixsamps",
                 "s_sdldevsamps",
@@ -229,13 +229,13 @@ static char *soundCvars[] =
 
 static char *cgCvars[] =
         {
-                "cg_ui_voteflags",
-                "cg_spawntimer_period",
-                "cg_spawntimer_set",
-                "cg_etversion",
+//                "cg_ui_voteflags",
+//                "cg_spawntimer_period",
+//                "cg_spawntimer_set",
+//                "cg_etversion",
                 "cg_debugskills",
-                "cg_uinfo",
-                "cg_stats",
+//                "cg_uinfo",
+//                "cg_stats",
                 "cg_thirdperson",
                 "cg_thirdpersonangle",
                 "cg_thirdpersonrange",
@@ -341,8 +341,8 @@ static char *cgCvars[] =
                 "cg_sharetimertext",
                 "cg_bloodflash",
                 "cg_showblood",
-                "cg_selectedplayername",
-                "cg_selectedplayer",
+//                "cg_selectedplayername",
+//                "cg_selectedplayer",
                 "cg_marktime",
                 "cg_drawspectatornames",
                 "cg_drawcrosshairpickups",
@@ -527,27 +527,27 @@ static char *rendererCvars[] =
 
 static char *comCvars[] =
         {
-                "com_errordiagnoseip",
-                "com_missingfiles",
-                "com_updatefiles",
-                "com_updateavailable",
-                "com_updatemessage",
-                "com_motdstring",
-                "com_motd",
-                "com_minimized",
-                "com_unfocused",
-                "com_buildscript",
+//                "com_errordiagnoseip",
+//                "com_missingfiles",
+//                "com_updatefiles",
+//                "com_updateavailable",
+//                "com_updatemessage",
+//                "com_motdstring",
+//                "com_motd",
+//                "com_minimized",
+//                "com_unfocused",
+//                "com_buildscript",
                 "com_speeds",
                 "com_showtrace",
                 "com_hunkused",
                 "com_soundmegs",
                 "com_recommendedset",
-                "com_introplayed",
+//                "com_introplayed",
                 "com_maxfps",
                 "com_hunkmegs",
-                "com_pidfile",
-                "com_pid",
-                "com_crashed",
+//                "com_pidfile",
+//                "com_pid",
+//                "com_crashed",
                 "com_ignorecrash",
                 "com_ansicolor",
                 "com_zonemegs"
@@ -555,7 +555,7 @@ static char *comCvars[] =
 
 static char *clientCvars[] =
         {
-                "cl_downloadname",
+//                "cl_downloadname",
                 "cl_cachegathering",
                 "cl_maxrewindbackups",
                 "cl_packetdelay",
@@ -563,10 +563,10 @@ static char *clientCvars[] =
                 "cl_waveoffset",
                 "cl_wavefilename",
                 "cl_waverecording",
-                "cl_demooffset",
-                "cl_demofilename",
-                "cl_demorecording",
-                "cl_bypassmouseinput",
+//                "cl_demooffset",
+//                "cl_demofilename",
+//                "cl_demorecording",
+//                "cl_bypassmouseinput",
                 "cl_serverstatusresendtime",
                 "cl_conxoffset",
                 "cl_showmouserate",
@@ -606,8 +606,8 @@ static char *clientCvars[] =
                 "cl_avidemotype",
                 "cl_extrapolationmargin",
                 "cl_renderer",
-                "cl_profile",
-                "cl_defaultprofile"
+//                "cl_profile",
+//                "cl_defaultprofile"
         };
 
 static MapList existingCvars[] =

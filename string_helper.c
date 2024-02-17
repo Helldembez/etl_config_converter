@@ -6,6 +6,22 @@
 #include <stdarg.h>
 #include <ctype.h>
 
+static inline int count(const char* str, char character) {
+    const char *p = str;
+    int count = 0, i;
+
+    // check the character per word -> text surrounded by either whitespace or ; or terminating 0
+
+//    do {
+//        if (*p == character) {
+//            count++;
+//            for (i=0; p[i+1];isspace(p[i+1]) ? *p++ : i++);
+//        }
+//    } while (*(p++));
+
+    return count;
+}
+
 static inline char *str_cpy(const char *from) {
     char *to = malloc(strlen(from) + 1);
     for (char *p = to; (*p = *from) != '\0'; ++p, ++from) { ;
